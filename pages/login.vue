@@ -12,10 +12,10 @@
         <input id="password" type="password" value="test" v-model="password" placeholder="password">
       </label>
       <button @click="postLogin">
-        register
+        Login
       </button>
-      <p>The credentials are not verified for the example purpose.</p>
     </div>
+    <h3>{{message}}</h3>
   </div>
 </template>
 
@@ -28,7 +28,8 @@ export default {
       return {
           name: null,
           email: null,
-          password: null
+          password: null,
+          message: null
       }
   },
   methods: {
@@ -45,16 +46,20 @@ export default {
                 'Content-Type': 'application/json'
             }
         }
-        fetch('http://localhost:5000/test', options)
+        fetch('http://localhost:5000/login', options)
             .then(res => res.json())
             .then(res => {
                 console.log(res);
-                const auth = {
-                accessToken: 'someStringGotFromApiServiceWithAjax'
+                if (res.authenticated) {
+                  const auth = {
+                  accessToken: res
+                  }
+                  this.$store.commit('setAuth', auth) // mutating to store for client rendering
+                  Cookie.set('auth', auth) // saving token in cookie for server rendering
+                  this.$router.push('/dashboard')
+                } else {
+                  this.message = res.Message;
                 }
-                this.$store.commit('setAuth', auth) // mutating to store for client rendering
-                Cookie.set('auth', auth) // saving token in cookie for server rendering
-                this.$router.push('/dashboard')
             })
     }
   }
