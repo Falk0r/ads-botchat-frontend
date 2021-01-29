@@ -10,7 +10,8 @@
         <li>{{ ad.text }}</li>
         <li>{{ ad.url }}</li>
         <li>{{ ad.user }}</li>
-        <button @click="deleteAd(ad._id)">Supprimer</button>
+        <button class="bg-red-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1" @click="deleteAd(ad._id)">Supprimer</button>
+        <ComponentUpdateAdModal buttonText="Editer" :ad="ad" @updatingAd="updateAd"/>
       </ul>
     </div>
     <div class="container">
@@ -31,7 +32,9 @@
 </template>
 
 <script>
+import ComponentUpdateAdModal from '../components/ComponentUpdateAdModal.vue';
 export default {
+  components: { ComponentUpdateAdModal },
   middleware: 'authenticated',
   data() {
     return {
@@ -84,9 +87,21 @@ export default {
       this.getAds();
     },
     deleteAd(item){
-      console.log({item});
       const options = {
         method: 'DELETE',
+        body: JSON.stringify(item),
+        headers: {
+          Authorization: `Bearer: ${this.$store.state.auth.accessToken.Token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+      fetch('http://localhost:5000/api/ads', options);
+      this.getAds();
+    },
+    updateAd(item){
+        console.log({item});
+        const options = {
+        method: 'PUT',
         body: JSON.stringify(item),
         headers: {
           Authorization: `Bearer: ${this.$store.state.auth.accessToken.Token}`,
