@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>Sign in to access the secret page</h1>
+    <h1>Sign in to access to your Dashboard</h1>
     <div>
       <label for="name">
         <input id="name" type="name" value="test" v-model="name" placeholder="name">
@@ -54,6 +54,7 @@ export default {
                   const auth = {
                   accessToken: res
                   }
+                  this.decodePayload(res.Token);
                   this.$store.commit('setAuth', auth) // mutating to store for client rendering
                   Cookie.set('auth', auth) // saving token in cookie for server rendering
                   this.$router.push('/dashboard')
@@ -61,6 +62,10 @@ export default {
                   this.message = res.Message;
                 }
             })
+    },
+    decodePayload(token){
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      this.$store.commit('setPayload', payload);
     }
   }
 }

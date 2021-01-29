@@ -1,6 +1,7 @@
 <template>
   <main>
-    <h1>This is dashboard page.</h1>
+    <h2>Welcome {{ userName }}</h2>
+    <h1>This is your Dashboard.</h1>
     <NuxtLink to="/">
       Back home
     </NuxtLink>
@@ -9,6 +10,7 @@
         <li>{{ ad.text }}</li>
         <li>{{ ad.url }}</li>
         <li>{{ ad.user }}</li>
+        <button @click="deleteAd(ad._id)">Supprimer</button>
       </ul>
     </div>
     <div class="container">
@@ -36,11 +38,15 @@ export default {
       ads: null,
       text: null,
       image: null,
-      url: null
+      url: null,
+      userName: null,
+      userEmail: null
     }
   },
   beforeMount(){
     this.getAds();
+    this.userName = this.$store.state.user.name;
+    this.userEmail = this.$store.state.user.email;
   },
   methods: {
     getAds() {
@@ -54,6 +60,9 @@ export default {
         .then(res => res.json())
         .then(res => {
           console.log(res);
+          if (res.authenticated) {
+            this.$router.push('/login')
+          }
           this.ads = res;
         })
     },
@@ -66,6 +75,19 @@ export default {
       const options = {
         method: 'POST',
         body: JSON.stringify(ad),
+        headers: {
+          Authorization: `Bearer: ${this.$store.state.auth.accessToken.Token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+      fetch('http://localhost:5000/api/ads', options);
+      this.getAds();
+    },
+    deleteAd(item){
+      console.log({item});
+      const options = {
+        method: 'DELETE',
+        body: JSON.stringify(item),
         headers: {
           Authorization: `Bearer: ${this.$store.state.auth.accessToken.Token}`,
           'Content-Type': 'application/json'
