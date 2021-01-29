@@ -1,28 +1,19 @@
 <template>
-  <div class="container">
-    <h1>Sign in to access to your Dashboard</h1>
-    <div>
-      <label for="name">
-        <input id="name" type="name" value="test" v-model="name" placeholder="name">
-      </label>
-      <label for="email">
-        <input id="email" type="email" value="test" v-model="email" placeholder="email">
-      </label>
-      <label for="password">
-        <input id="password" type="password" value="test" v-model="password" placeholder="password">
-      </label>
-      <button @click="postLogin">
-        Login
-      </button>
-    </div>
+  <div>
+    <componentNavbar />
+    <componentLogin @logingUser="postLogin"/>
+    <!-- <componentLogin @logingUser="postLogin" :message="message"/> -->
     <h3>{{message}}</h3>
   </div>
 </template>
 
 <script>
-const Cookie = process.client ? require('js-cookie') : undefined
+const Cookie = process.client ? require('js-cookie') : undefined;
+import ComponentNavbar from '../components/ComponentNavbar.vue';
+import ComponentLogin from '../components/ComponentLogin.vue';
 
 export default {
+  components: { ComponentLogin, ComponentNavbar },
   middleware: 'notAuthenticated',
   data() {
       return {
@@ -33,12 +24,8 @@ export default {
       }
   },
   methods: {
-    postLogin () {
-        const user = {
-            'name': this.name,
-            'email': this.email,
-            'password': this.password
-        }
+    postLogin(user) {
+      console.log({user});
         const options = {
             method: 'POST',
             body: JSON.stringify(user),
@@ -57,7 +44,7 @@ export default {
                   this.decodePayload(res.Token);
                   this.$store.commit('setAuth', auth) // mutating to store for client rendering
                   Cookie.set('auth', auth) // saving token in cookie for server rendering
-                  this.$router.push('/dashboard')
+                  this.$router.push('/dashboard');
                 } else {
                   this.message = res.Message;
                 }
