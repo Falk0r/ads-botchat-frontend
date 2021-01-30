@@ -1,7 +1,7 @@
 <template>
   <!-- component -->
 <!-- This is an example component -->
-<div class="h-screen font-sans login bg-cover">
+<div class="h-full font-sans login bg-cover">
 <div class="container mx-auto h-full flex flex-1 justify-center items-center">
     <div class="w-full max-w-lg">
       <div class="leading-loose">
@@ -23,8 +23,8 @@
                 <a class="inline-block right-0 align-baseline font-bold text-sm text-500 text-white hover:text-red-400"
                     href="#">Mot de passe perdu ?</a>
             </div>
-            <div class="text-center">
-                <h3 class="inline-block right-0 align-baseline font-light text-sm text-500 hover:text-red-400">
+            <div class="text-center" v-if="message">
+                <h3 class="inline-block right-0 align-baseline font-light text-m text-500 text-red-400 mt-5">
                     {{message}}
                 </h3>
               </div>

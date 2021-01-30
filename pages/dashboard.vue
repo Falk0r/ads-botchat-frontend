@@ -1,44 +1,25 @@
 <template>
   <main>
-    <h2>Welcome {{ userName }}</h2>
-    <h1>This is your Dashboard.</h1>
-    <NuxtLink to="/">
-      Back home
-    </NuxtLink>
-    <div class="container" v-if="ads">
-      <ul v-for="ad of ads" :key="ad._id">
-        <li>{{ ad.text }}</li>
-        <li>{{ ad.url }}</li>
-        <li>{{ ad.user }}</li>
-        <button class="bg-red-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1" @click="deleteAd(ad._id)">Supprimer</button>
-        <ComponentUpdateAdModal buttonText="Editer" :ad="ad" @updatingAd="updateAd"/>
-      </ul>
-    </div>
-    <div class="container">
-      <label for="text">
-        <input id="text" type="text" v-model="text" placeholder="text">
-      </label>
-      <label for="image">
-        <input id="image" type="" v-model="image" placeholder="image">
-      </label>
-      <label for="url">
-        <input id="url" type="url" v-model="url" placeholder="url">
-      </label>
-      <button @click="createAd">
-        Créer
-      </button>
+    <ComponentNavbar @creatingAd="createAd"/>
+    <div v-if="ads" class="flex flex-wrap justify-around space-x-1 space-y-1">
+      <div v-for="ad of ads" :key="ad._id">
+        <ComponentDashboardCard :ad="ad" @updatingAd="updateAd" @deletingAd="deleteAd"/>
+      </div>
     </div>
   </main>
 </template>
 
 <script>
+import ComponentNavbar from '../components/ComponentNavbar.vue';
 import ComponentUpdateAdModal from '../components/ComponentUpdateAdModal.vue';
+import ComponentDashboardCard from '../components/ComponentDashboardCard.vue';
 export default {
-  components: { ComponentUpdateAdModal },
+  components: { ComponentUpdateAdModal, ComponentNavbar, ComponentDashboardCard },
   middleware: 'authenticated',
   data() {
     return {
       ads: null,
+      title: null,
       text: null,
       image: null,
       url: null,
@@ -69,22 +50,23 @@ export default {
           this.ads = res;
         })
     },
-    createAd() {
+    createAd(item) {
       const ad = {
         'text' : this.text,
         'image' : this.image,
-        'url' : this.url
+        'url' : this.url,
+        'title' : this.title
       }
       const options = {
         method: 'POST',
-        body: JSON.stringify(ad),
+        body: JSON.stringify(item),
         headers: {
           Authorization: `Bearer: ${this.$store.state.auth.accessToken.Token}`,
           'Content-Type': 'application/json'
         }
       }
-      fetch('http://localhost:5000/api/ads', options);
-      this.getAds();
+      fetch('http://localhost:5000/api/ads', options)
+        .then(this.getAds());
     },
     deleteAd(item){
       const options = {
@@ -95,8 +77,8 @@ export default {
           'Content-Type': 'application/json'
         }
       }
-      fetch('http://localhost:5000/api/ads', options);
-      this.getAds();
+      fetch('http://localhost:5000/api/ads', options)
+        .then(this.getAds());
     },
     updateAd(item){
         console.log({item});
@@ -108,8 +90,8 @@ export default {
           'Content-Type': 'application/json'
         }
       }
-      fetch('http://localhost:5000/api/ads', options);
-      this.getAds();
+      fetch('http://localhost:5000/api/ads', options)
+        .then(this.getAds());
     }
   }
 }

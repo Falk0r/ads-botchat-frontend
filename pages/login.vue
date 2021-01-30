@@ -1,9 +1,7 @@
 <template>
-  <div>
+  <div class="h-screen flex flex-col">
     <componentNavbar />
-    <componentLogin @logingUser="postLogin"/>
-    <!-- <componentLogin @logingUser="postLogin" :message="message"/> -->
-    <h3>{{message}}</h3>
+    <componentLogin @logingUser="postLogin" :message="message"/>
   </div>
 </template>
 

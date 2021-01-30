@@ -14,14 +14,14 @@
                 <nav>
                 <ul class="md:flex items-center justify-between text-base text-blue-600 pt-4 md:pt-0">
                     <li><NuxtLink to="/" class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2">Home</NuxtLink></li>
-                    <li><NuxtLink to="/dashboard" class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2">Dashboard</NuxtLink></li>
-                    <li><NuxtLink to="/dashboard" class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2">Dashboard</NuxtLink></li>
+                    <li v-if="$store.state.auth"><NuxtLink to="/dashboard" class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2">Dashboard</NuxtLink></li>
                 </ul>
                 </nav>
             </div>
             
             <div class="order-2 md:order-3 flex flex-wrap items-center justify-end mr-0 md:mr-4" id="nav-content">
                 <div class="auth flex items-center w-full md:w-full" v-if="$store.state.auth">
+                    <component-create-ad-modal v-on="$listeners" buttonText="Create Ad"/>
                     <button @click="logout" class="bg-red-600 text-gray-200  p-2 rounded  hover:bg-red-500 hover:text-gray-100">Log out</button>
                 </div>
                 <div class="auth flex items-center w-full md:w-full" v-else>
@@ -33,12 +33,15 @@
    </nav>
 </template>
 <script>
+import ComponentCreateAdModal from './ComponentCreateAdModal.vue'
 const Cookie = process.client ? require('js-cookie') : undefined
 export default {
+  components: { ComponentCreateAdModal },
   methods: {
     logout () {
       Cookie.remove('auth')
       this.$store.commit('setAuth', null)
+      this.$router.push('/')
     }
   }
 }
