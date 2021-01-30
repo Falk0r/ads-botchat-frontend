@@ -3,7 +3,7 @@
     <ComponentNavbar @creatingAd="createAd"/>
     <div v-if="ads" class="flex flex-wrap justify-around space-x-1 space-y-1">
       <div v-for="ad of ads" :key="ad._id">
-        <ComponentDashboardCard :ad="ad" @updatingAd="updateAd" @deletingAd="deleteAd"/>
+        <ComponentDashboardCard :ad="ad" @updatingAd="updateAd" @deletingAd="deleteAd" @publishingAd="updateAd" />
       </div>
     </div>
   </main>
@@ -19,10 +19,6 @@ export default {
   data() {
     return {
       ads: null,
-      title: null,
-      text: null,
-      image: null,
-      url: null,
       userName: null,
       userEmail: null
     }
