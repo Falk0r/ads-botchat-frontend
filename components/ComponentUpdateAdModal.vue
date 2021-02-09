@@ -67,11 +67,7 @@ export default {
     ad: Object
   },
   created() {
-    this.adToUpdate.text = this.ad.text,
-    this.adToUpdate.image = this.ad.image,
-    this.adToUpdate.url = this.ad.url,
-    this.adToUpdate._id = this.ad._id,
-    this.adToUpdate.title = this.ad.title
+    this.adToUpdate = this.ad
   },
   methods: {
     toggleModal: function(){

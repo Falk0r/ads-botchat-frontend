@@ -3,7 +3,7 @@
     <ComponentNavbar @creatingAd="createAd"/>
     <div v-if="ads" class="flex flex-wrap justify-around space-x-1 space-y-1">
       <div v-for="ad of ads" :key="ad._id">
-        <ComponentDashboardCard :ad="ad" @updatingAd="updateAd" @deletingAd="deleteAd" @publishingAd="updateAd" />
+        <ComponentDashboardCard :ad="ad" @updatingAd="updateAd" @deletingAd="deleteAd" @publishingAd="publishAd" />
       </div>
     </div>
   </main>
@@ -87,6 +87,18 @@ export default {
         }
       }
       fetch('http://localhost:5000/api/ads', options)
+        .then(this.getAds());
+    },
+    publishAd(item){
+      console.log({item});
+      const url = 'http://localhost:5000/api/ads/'+ item._id + '/publish';
+      const options = {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer: ${this.$store.state.auth.accessToken.Token}`
+        }
+      }
+      fetch(url, options)
         .then(this.getAds());
     }
   }
