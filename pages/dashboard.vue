@@ -1,7 +1,7 @@
 <template>
   <main>
     <ComponentNavbar @creatingAd="createAd"/>
-    <div v-if="ads" class="flex flex-wrap justify-around space-x-1 space-y-1">
+    <div v-if="ads" class="flex flex-wrap justify-around space-x-1 space-y-1 my-20">
       <div v-for="ad of ads" :key="ad._id">
         <ComponentDashboardCard :ad="ad" @updatingAd="updateAd" @deletingAd="deleteAd" @publishingAd="publishAd" />
       </div>
