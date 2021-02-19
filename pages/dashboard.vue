@@ -91,14 +91,26 @@ export default {
     },
     publishAd(item){
       console.log({item});
-      const url = 'http://localhost:5000/api/ads/'+ item._id + '/publish';
+      let url;
+      if (item.status === "publish") {
+        url = 'http://127.0.0.1:5000/publish';        
+      } else {
+        url = 'http://127.0.0.1:5000/depublish';
+      }
       const options = {
-        method: 'GET',
+        method: 'POST',
+        body: JSON.stringify(item),
         headers: {
-          Authorization: `Bearer: ${this.$store.state.auth.accessToken.Token}`
+          Authorization: `Bearer: ${this.$store.state.auth.accessToken.Token}`,
+          'Content-Type': 'application/json'
         }
       }
+      console.log(url);
       fetch(url, options)
+        .then(res => res.json())
+        .then(res => {
+          console.log(res);
+        })
         .then(this.getAds());
     }
   }

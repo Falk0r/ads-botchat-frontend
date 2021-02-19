@@ -36,8 +36,8 @@
                             <button class="flex justify-center items-center w-full text-gray-900 px-4 py-3 rounded-md focus:outline-none" v-on:click="toggleModal()">
                                 <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg> Annuler
                             </button>
-                            <button @click="sendPublish" v-on:click="toggleModal()" v-if="adToPublish.status == 'publish'" class="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none">Dépublier</button>
-                            <button @click="sendPublish" v-on:click="toggleModal()" v-else class="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none">Publier</button>
+                            <button @click="sendPublish" v-on:click="toggleModal()" v-if="adToPublish.status == 'publish'" class="bg-red-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none">Dépublier</button>
+                            <button @click="sendPublish" v-on:click="toggleModal()" v-else class="bg-green-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none">Publier</button>
                         </div>
                         </div>
                     </div>
@@ -63,7 +63,7 @@ name: "publish-ad-modal",
   },
   created() {
     this.adToPublish = this.ad;
-    this.adToPublish.script = '\<script src=\"http://127.0.0.1:5000/js-customers/'+ this.adToPublish._id +'\"\>\<\/script\>';
+    this.adToPublish.script = '\<script defer src=\"http://127.0.0.1:5000/js-customers/'+ this.adToPublish._id +'\"\>\<\/script\>';
   },
   methods: {
     toggleModal: function(){
