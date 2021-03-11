@@ -62,6 +62,10 @@ export default {
         }
       }
       fetch('http://localhost:5000/api/ads', options)
+        .then(res => res.json())
+        .then(res => {
+          console.log(res);
+        })
         .then(this.getAds());
     },
     deleteAd(item){
@@ -74,6 +78,10 @@ export default {
         }
       }
       fetch('http://localhost:5000/api/ads', options)
+        .then(res => res.json())
+        .then(res => {
+          console.log(res);
+        })
         .then(this.getAds());
     },
     updateAd(item){
@@ -87,15 +95,19 @@ export default {
         }
       }
       fetch('http://localhost:5000/api/ads', options)
+        .then(res => res.json())
+        .then(res => {
+          console.log(res);
+        })
         .then(this.getAds());
     },
     publishAd(item){
       console.log({item});
       let url;
       if (item.status === "publish") {
-        url = 'http://127.0.0.1:5000/publish';        
+        url = 'http://127.0.0.1:5000/api/publish';        
       } else {
-        url = 'http://127.0.0.1:5000/depublish';
+        url = 'http://127.0.0.1:5000/api/depublish';
       }
       const options = {
         method: 'POST',
@@ -110,8 +122,8 @@ export default {
         .then(res => res.json())
         .then(res => {
           console.log(res);
-        })
-        .then(this.getAds());
+          this.getAds();
+        });
     }
   }
 }
