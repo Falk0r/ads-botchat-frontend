@@ -53,11 +53,12 @@ export default {
         'url' : this.url,
         'title' : this.title
       }
+      console.log("create", item);
       const options = {
         method: 'POST',
         body: JSON.stringify(item),
         headers: {
-          Authorization: `Bearer: ${this.$store.state.auth.accessToken.Token}`,
+          Authorization: `bearer ${this.$store.state.auth.accessToken.Token}`,
           'Content-Type': 'application/json'
         }
       }
@@ -69,11 +70,12 @@ export default {
         .then(this.getAds());
     },
     deleteAd(item){
+      console.log("item", JSON.stringify({item}));
       const options = {
         method: 'DELETE',
-        body: JSON.stringify(item),
+        body: JSON.stringify({item}),
         headers: {
-          Authorization: `Bearer: ${this.$store.state.auth.accessToken.Token}`,
+          Authorization: `bearer ${this.$store.state.auth.accessToken.Token}`,
           'Content-Type': 'application/json'
         }
       }
@@ -90,7 +92,7 @@ export default {
         method: 'PUT',
         body: JSON.stringify(item),
         headers: {
-          Authorization: `Bearer: ${this.$store.state.auth.accessToken.Token}`,
+          Authorization: `bearer ${this.$store.state.auth.accessToken.Token}`,
           'Content-Type': 'application/json'
         }
       }
@@ -113,7 +115,7 @@ export default {
         method: 'POST',
         body: JSON.stringify(item),
         headers: {
-          Authorization: `Bearer: ${this.$store.state.auth.accessToken.Token}`,
+          Authorization: `bearer ${this.$store.state.auth.accessToken.Token}`,
           'Content-Type': 'application/json'
         }
       }
