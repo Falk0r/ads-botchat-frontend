@@ -33,7 +33,7 @@ export default {
       const options = {
         method: 'GET',
         headers: {
-          Authorization: `Bearer: ${this.$store.state.auth.accessToken.Token}`
+          Authorization: `bearer ${this.$store.state.auth.accessToken.Token}`
         }
       }
       fetch('http://localhost:5000/api/ads', options)
